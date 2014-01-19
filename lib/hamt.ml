@@ -152,7 +152,9 @@ module Make (Config : CONFIG) (Key : HASHABLE) : S with type key = Key.t = struc
 
   let singleton k v = Leaf (hash k, k, v)
 
-  let is_empty x = x = Empty
+  let is_empty = function
+    | Empty -> true
+    | _ -> false
 
   let rec cardinal = function
     | Empty -> 0
@@ -240,7 +242,7 @@ module Make (Config : CONFIG) (Key : HASHABLE) : S with type key = Key.t = struc
     let rec loop ix jx bitmap =
       if ix = chunk then BitmapIndexedNode (bitmap, base)
       else if
-        children.(ix) = Empty || to_remove ix
+        is_empty children.(ix) || to_remove ix
       then loop (succ ix) jx bitmap
       else begin
         base.(jx) <- children.(ix);
@@ -320,7 +322,7 @@ module Make (Config : CONFIG) (Key : HASHABLE) : S with type key = Key.t = struc
       let child = if not_exists then Empty else base.(ix) in
       let child = alter_node ~mute (shift + shift_step) hash key update child in
       begin
-        match change not_exists (child = Empty) with
+        match change not_exists (is_empty child) with
         | Nil -> bm_node
         | Modified ->
           if mute then begin base.(ix) <- child; bm_node end
@@ -341,7 +343,7 @@ module Make (Config : CONFIG) (Key : HASHABLE) : S with type key = Key.t = struc
       let sub_hash = hash_fragment shift hash in
       let child = children.(sub_hash) in
       let child' = alter_node ~mute (shift + shift_step) hash key update child in
-      match change (child = Empty) (child' = Empty) with
+      match change (is_empty child) (is_empty child') with
       | Nil -> arr_node
       | Added ->
         if mute then
@@ -446,7 +448,8 @@ module Make (Config : CONFIG) (Key : HASHABLE) : S with type key = Key.t = struc
     | ArrayNode (nb_children, children) ->
       let children = Array.map (alter_all f) children in
       let nb_children = Array.fold_left
-                          (fun n v -> if v = Empty then n else succ n) 0 children in
+                          (fun n v -> if is_empty v then n else succ n) 0 children in
+      let open Int in
       if nb_children < arrnode_min
       then pack_array_node (fun _ -> false) nb_children children
       else ArrayNode (nb_children, children)
@@ -485,7 +488,7 @@ module Make (Config : CONFIG) (Key : HASHABLE) : S with type key = Key.t = struc
         else find (shift + shift_step) hash key base.(from_bitmap bitmap sub_hash)
       | ArrayNode (_, children) ->
         let child = children.(hash_fragment shift hash) in
-        if child = Empty then raise Not_found
+        if is_empty child then raise Not_found
         else find (shift + shift_step) hash key child
     in find 0 (hash key) key
 
@@ -537,7 +540,7 @@ module Make (Config : CONFIG) (Key : HASHABLE) : S with type key = Key.t = struc
     | BitmapIndexedNode (_, base) -> choose base.(0)
     | ArrayNode (_, children) ->
       let rec loop n =
-        if children.(n) = Empty then loop (succ n) else children.(n)
+        if is_empty children.(n) then loop (succ n) else children.(n)
       in choose (loop 0)
 
   let pop hamt =
@@ -559,7 +562,7 @@ module Make (Config : CONFIG) (Key : HASHABLE) : S with type key = Key.t = struc
       and nb_children = ref 0 in
       for i = 0 to mask do
         let child = intersect_node shift f children1.(i) children2.(i) in
-        if child <> Empty then
+        if child |> is_empty |> not then
           begin
             incr nb_children;
             children.(i) <- child
@@ -630,7 +633,7 @@ module Make (Config : CONFIG) (Key : HASHABLE) : S with type key = Key.t = struc
       and children = Array.make chunk Empty in
       for i = 0 to mask do
         let node = merge_node shift f children1.(i) children2.(i)
-        in if node <> Empty then incr nb_children;
+        in if not (is_empty node) then incr nb_children;
         children.(i) <- node
       done;
       reify_node (ArrayNode (!nb_children, children))
