@@ -16,7 +16,7 @@ make
 make install
 ```
 
-All original work was done by Thibault Suzanne, and Gabriel Scherer [1][2]
+All original work was done by Thibault Suzanne [1][2]
 
 [1] http://gallium.inria.fr/blog/implementing-hamt-for-ocaml/
 
