@@ -4,7 +4,16 @@ let () = Random.self_init ()
 
 module IntMap = Map.Make (struct type t = int let compare = compare end)
 
-let n = int_of_string (Sys.argv.(1))
+module Hamt = Hamt.Make
+                (Hamt.StdConfig)
+                (struct
+                  type t = int
+                  let hash = Hashtbl.hash
+                end)
+
+(* let n = int_of_string (Sys.argv.(1)) *)
+
+let n = 100
 
 let random_int bound =
   Int64.to_int (Random.int64 (Int64.of_int bound))
