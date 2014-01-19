@@ -24,7 +24,7 @@ module StdConfig32 : CONFIG = struct
   let arrnode_min = 4
 end
 
-module Int : sig
+module IntCompare : sig
   type t = int
   val (=) : int -> int -> bool
   val (<) : int -> int -> bool
@@ -39,7 +39,7 @@ end = struct
   let (<>) x y = x <> y
 end
 
-open Int
+open IntCompare
 
 module type S = sig
   type key
