@@ -23,6 +23,22 @@ module StdConfig32 : CONFIG = struct
   let arrnode_min = 4
 end
 
+module Int : sig
+  type t = int
+  val (=) : int -> int -> bool
+  val (<) : int -> int -> bool
+  val (>) : int -> int -> bool
+  val (<>) : int -> int -> bool
+end = struct
+  open Pervasives
+  type t = int
+  let (=) x y = x = y
+  let (>) x y = x > y
+  let (<) x y = x < y
+end
+
+open Int
+
 module type HASHABLE = sig
   type t
   val hash : t -> int
