@@ -36,6 +36,7 @@ end = struct
   let (=) x y = x = y
   let (>) x y = x > y
   let (<) x y = x < y
+  let (<>) x y = x <> y
 end
 
 open Int
