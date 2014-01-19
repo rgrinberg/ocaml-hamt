@@ -4,5 +4,3 @@ B _build
 B _build/lib
 B _build/lib_test
 PKG monomorphic
-PKG comparelib
-PKG comparelib.syntax
