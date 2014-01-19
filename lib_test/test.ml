@@ -1,8 +1,3 @@
-(*
-  This whole file is ugly
-*)
-
-
 open Printf
 
 let () = Random.self_init ()
@@ -23,42 +18,42 @@ let generate =
     if n = 0 then acc
     else generate (random_int Pervasives.max_int :: acc) (pred n) 
   in generate []
-  
+
 let generate_different li =
   let rec aux acc = function
     | [] -> acc
     | [x] -> random x Pervasives.max_int :: acc
     | x :: y :: zs -> aux (random x y :: acc) (y :: zs)
   in aux [] (List.sort compare li)
-    
-(*
-let () = printf "Generating %d random integers\n%!" n
-let presents = List.sort compare (generate n)
 
-(* 
+(*
+   let () = printf "Generating %d random integers\n%!" n
+   let presents = List.sort compare (generate n)
+
+   (* 
    presents and absents might share elements, but it is highly unlikely 
    and should have negligeable effect if so
-*)
-let () = printf "Generating %d other random integers\n%!" n
-let absents = List.sort compare (generate_different presents)
+ *)
+   let () = printf "Generating %d other random integers\n%!" n
+   let absents = List.sort compare (generate_different presents)
 *)
 
 (*
-let () = printf "\nInserting elements in a Hamt\n%!"
-let before = Sys.time ()
-let hamt = fill_structure Hamt.add Hamt.empty presents
-let () = printf "%f\n%!" (Sys.time () -. before)
+   let () = printf "\nInserting elements in a Hamt\n%!"
+   let before = Sys.time ()
+   let hamt = fill_structure Hamt.add Hamt.empty presents
+   let () = printf "%f\n%!" (Sys.time () -. before)
 
 
-let () = printf "\nReading present elements in a Hamt\n%!"
-let before = Sys.time ()
-let () = List.iter (fun x -> ignore (Hamt.find x hamt)) presents
-let () = printf "%f\n%!" (Sys.time () -. before)
+   let () = printf "\nReading present elements in a Hamt\n%!"
+   let before = Sys.time ()
+   let () = List.iter (fun x -> ignore (Hamt.find x hamt)) presents
+   let () = printf "%f\n%!" (Sys.time () -. before)
 
-let () = printf "\nReading absent elements in a Hamt\n%!"
-let before = Sys.time ()
-let () = List.iter (fun x -> try ignore (Hamt.find x hamt) with Not_found -> ()) absents
-let () = printf "%f\n%!" (Sys.time () -. before)
+   let () = printf "\nReading absent elements in a Hamt\n%!"
+   let before = Sys.time ()
+   let () = List.iter (fun x -> try ignore (Hamt.find x hamt) with Not_found -> ()) absents
+   let () = printf "%f\n%!" (Sys.time () -. before)
 *)
 
 let rec fill n acc =
@@ -73,19 +68,19 @@ let () = printf "%f\n%!" (Sys.time () -. before)
 let () = print_int (Hamt.cardinal map)
 
 (*
-let () = printf "\nReading present elements in a IntMap\n%!"
-let before = Sys.time ()
-let () = List.iter (fun x -> ignore (IntMap.find x map)) presents
-let () = printf "%f\n%!" (Sys.time () -. before)
+   let () = printf "\nReading present elements in a IntMap\n%!"
+   let before = Sys.time ()
+   let () = List.iter (fun x -> ignore (IntMap.find x map)) presents
+   let () = printf "%f\n%!" (Sys.time () -. before)
 
-let () = printf "\nReading absent elements in a IntMap\n%!"
-let before = Sys.time ()
-let () = List.iter (fun x -> try ignore (IntMap.find x map) with Not_found -> ()) absents
-let () = printf "%f\n%!" (Sys.time () -. before)
+   let () = printf "\nReading absent elements in a IntMap\n%!"
+   let before = Sys.time ()
+   let () = List.iter (fun x -> try ignore (IntMap.find x map) with Not_found -> ()) absents
+   let () = printf "%f\n%!" (Sys.time () -. before)
 
-let () = printf "\nDeleting elements in a IntMap\n%!"
-let before = Sys.time ()
-let _ = List.fold_left (fun acc x -> IntMap.remove x acc) map presents
-let () = printf "%f\n%!" (Sys.time () -. before)
+   let () = printf "\nDeleting elements in a IntMap\n%!"
+   let before = Sys.time ()
+   let _ = List.fold_left (fun acc x -> IntMap.remove x acc) map presents
+   let () = printf "%f\n%!" (Sys.time () -. before)
 
 *)

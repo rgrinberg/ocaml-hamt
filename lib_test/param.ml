@@ -1,5 +1,5 @@
 (*
-  Originally written by Gabriel Scherer
+   Originally written by Gabriel Scherer
 *)
 
 module type Assoc = sig
@@ -12,18 +12,19 @@ end
 
 let mem x t = Array.fold_left (fun b y -> b || x = y) false t
 
-module Config =
-  (val
-      if mem "-32" Sys.argv
-      then (module Hamt.StdConfig32)
-      else (module Hamt.StdConfig)
-        : Hamt.CONFIG)
+module Config = (val
+                  if mem "-32" Sys.argv
+                  then (module Hamt.StdConfig32)
+                  else (module Hamt.StdConfig)
+                  : Hamt.CONFIG)
 
-module AssocHamt = Hamt.Make (Config)
-  (struct type t = int let hash = Hashtbl.hash end)
+module AssocHamt =
+  Hamt.Make (Config)
+    (struct type t = int let hash = Hashtbl.hash end)
 
-module AssocMap = Map.Make
-  (struct type t = int let compare = compare end)
+module AssocMap =
+  Map.Make
+    (struct type t = int let compare = compare end)
 
 let implem, nbiter, should_test_add, should_test_find =
   let format = "implem:(hamt|map) nbiter:[0-9]* options:(add|find)*" in
@@ -31,24 +32,23 @@ let implem, nbiter, should_test_add, should_test_find =
     Printf.kfprintf (fun _ -> exit 1) stderr
       ("invalid command line (expected format %S)\n" ^^ fmt) format in
   match Array.to_list Sys.argv with
-    | _progname :: hamt :: nbiter :: options ->
-        let implem = match hamt with
-          | "hamt" -> (module AssocHamt : Assoc)
-          | "map" -> (module AssocMap : Assoc)
-          | other -> error "invalid impl:%S\n" other
-        in
-        let nbiter =
-          try int_of_string nbiter with _ -> error "invalid nbiter:%S\n" nbiter in
-        let test_add = List.exists ((=) "add") options in
-        let test_find = List.exists ((=) "find") options in
-        let () =
-          List.iter
-            (fun e -> if e <> "add" && e <> "find" then
-                error "invalid option %S\n" e)
-            options in
-        implem, nbiter, test_add, test_find
-    | _ ->
-        error ""
+  | _progname :: hamt :: nbiter :: options ->
+    let implem = match hamt with
+      | "hamt" -> (module AssocHamt : Assoc)
+      | "map" -> (module AssocMap : Assoc)
+      | other -> error "invalid impl:%S\n" other
+    in
+    let nbiter =
+      try int_of_string nbiter with _ -> error "invalid nbiter:%S\n" nbiter in
+    let test_add = List.exists ((=) "add") options in
+    let test_find = List.exists ((=) "find") options in
+    let () =
+      List.iter
+        (fun e -> if e <> "add" && e <> "find" then
+            error "invalid option %S\n" e)
+        options in
+    implem, nbiter, test_add, test_find
+  | _ -> error ""
 
 module M = (val implem)
 
@@ -63,13 +63,13 @@ let rec random_input limit n acc =
 let rec test_add t = function
   | [] -> t
   | i::input ->
-      test_add (M.add i () t) input
+    test_add (M.add i () t) input
 
 let rec test_find t = function
   | [] -> ()
   | i::input ->
-      begin try M.find i t with _ -> () end;
-      test_find t input
+    begin try M.find i t with _ -> () end;
+    test_find t input
 
 let () =
   let limit =

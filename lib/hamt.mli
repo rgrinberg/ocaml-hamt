@@ -28,9 +28,9 @@ module StdConfig : CONFIG
     are :
 
     {[
-    let shift_step = 5
-    let bmnode_max = 16
-    let arrnode_min = 8
+      let shift_step = 5
+      let bmnode_max = 16
+      let arrnode_min = 8
     ]}
 *)
 
@@ -39,9 +39,9 @@ module StdConfig32 : CONFIG
     are :
 
     {[
-    let shift_step = 4
-    let bmnode_max = 8
-    let arrnode_min = 4
+      let shift_step = 4
+      let bmnode_max = 8
+      let arrnode_min = 4
     ]}
 *)
 
@@ -249,8 +249,7 @@ module type S = sig
   module Import : sig
 
     (** Input signature of the module {!Make}, representing datas to be imported in Hamt. *)
-    module type FOLDABLE =
-    sig
+    module type FOLDABLE = sig
 
       type key
       (** The type of your datas' keys. *)
@@ -266,8 +265,7 @@ module type S = sig
 
     end
 
-    module Make (M : FOLDABLE with type key = key) :
-    sig
+    module Make (M : FOLDABLE with type key = key) : sig
       val add_from : 'a M.t -> 'a t -> 'a t
       (** [add_from s t] adds every binding of [s] to the Hamt [t]. *)
 
@@ -275,8 +273,7 @@ module type S = sig
       (** [from s] buils a Hamt containing every binding of [s].*)
     end
 
-    module AssocList :
-    sig
+    module AssocList : sig
       val add_from : (key * 'a) list -> 'a t -> 'a t
       (** [add_from li t] adds every binding of the association list
           [li] to the Hamt t. *)
@@ -285,15 +282,12 @@ module type S = sig
       (** [from li] builds a Hamt containing every binding of
           the association list [li]. *)
     end
-
   end
-
 
   (** {2 Alternative operations } *)
 
   (** Operations without exceptions. *)
-  module ExceptionLess :
-  sig
+  module ExceptionLess : sig
 
     (** These functions do not raise [Not_found] if they do not find
         a relevant binding. In this case, they use the [option] type
@@ -308,15 +302,14 @@ module type S = sig
   end
 
   (** Infix operations. *)
-  module Infix :
-  sig
+  module Infix : sig
     val ( --> ) : 'a t -> key -> 'a
     (** [t --> k] returns the current binding of [k] in [t], or
         raises [Not_found]. Strictly equivalent to [find k t]. *)
 
     val ( <-- ) : 'a t -> key * 'a -> 'a t
-  (** [t <-- (k, v)] adds to [t] a binding from [k] to [v] and
-      returns the result. Strictly equivalent to [add k v Hamt]. *)
+    (** [t <-- (k, v)] adds to [t] a binding from [k] to [v] and
+        returns the result. Strictly equivalent to [add k v Hamt]. *)
 
   end
 end
