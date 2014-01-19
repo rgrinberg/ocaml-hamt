@@ -5,3 +5,6 @@ setup.data
 setup.log
 setup.ml
 setup.ml
+lib/META
+lib/*.mllib
+_tags
