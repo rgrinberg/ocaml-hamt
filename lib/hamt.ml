@@ -126,6 +126,10 @@ module type S = sig
 end
 
 module Make (Config : CONFIG) (Key : HASHABLE) : S with type key = Key.t = struct
+  module Key = struct
+    include Key
+    let (=) = Key.equal
+  end
   open Config
   (* Branching factor of the structure *)
   let chunk = 1 lsl shift_step
@@ -221,7 +225,7 @@ module Make (Config : CONFIG) (Key : HASHABLE) : S with type key = Key.t = struc
   let rec update_list update k = function
     | [] -> option [] (fun v -> [k, v]) (update None)
     | (kx, vx) as x :: xs ->
-      if kx = k
+      if Key.(kx = k)
       then option xs (fun v -> (k, v) :: xs) (update (Some vx))
       else x :: update_list update k xs
 
@@ -297,7 +301,7 @@ module Make (Config : CONFIG) (Key : HASHABLE) : S with type key = Key.t = struc
     | Empty ->
       option Empty (leaf hash key) (update None)
     | Leaf (h, k, v) as leaf1 ->
-      if k = key
+      if Key.(k = key)
       then option Empty (leaf h k) (update (Some v))
       else
         option leaf1
@@ -305,7 +309,8 @@ module Make (Config : CONFIG) (Key : HASHABLE) : S with type key = Key.t = struc
           (update None)
     | HashCollision (h, pairs) as hash_collision ->
       if hash = h then
-        let pairs = update_list update key pairs in begin
+        let pairs = update_list update key pairs in
+        begin
           match pairs with
           | [] -> failwith "alter_node" (* Should never happen *)
           | [(k, v)] -> leaf h k v
@@ -480,7 +485,7 @@ module Make (Config : CONFIG) (Key : HASHABLE) : S with type key = Key.t = struc
   let find key =
     let rec find shift hash key = function
       | Empty -> raise Not_found
-      | Leaf (_, k, v) -> if k = key then v else raise Not_found
+      | Leaf (_, k, v) -> if Key.(k = key) then v else raise Not_found
       | HashCollision (_, pairs) -> List.assoc key pairs
       | BitmapIndexedNode (bitmap, base) ->
         let sub_hash = hash_fragment shift hash in
@@ -648,7 +653,7 @@ module Make (Config : CONFIG) (Key : HASHABLE) : S with type key = Key.t = struc
         let flag = ref false in
         let t2 = alter_all
                    (fun k' v' ->
-                      if k' = k then (flag := true; f k (Some v) (Some v'))
+                      if Key.(k' = k) then (flag := true; f k (Some v) (Some v'))
                       else f k' None (Some v')) t2;
         in if !flag then t2 else alter_node shift h k (fun _ -> f k (Some v) None) t2
       | HashCollision (h, li), _ ->
