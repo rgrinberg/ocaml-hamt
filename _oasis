@@ -3,7 +3,7 @@ Name:        hamt
 Version:     0.1
 Synopsis:    Hash Array Mapped Tries
 Authors:     Thibault Suzanne, Gabriel Scherer, Rudi Grinberg
-License:     BSD3
+License:     MIT
 BuildTools: ocamlbuild
 Plugins:     META (0.4)
 
