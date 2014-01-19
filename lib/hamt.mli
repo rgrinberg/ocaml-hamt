@@ -45,17 +45,6 @@ module StdConfig32 : CONFIG
     ]}
 *)
 
-module type HASHABLE = sig
-  (** Input signature for the hashable keys module. *)
-
-  type t
-  (** The type of hashable elements, to be used as keys. *)
-
-  val hash : t -> int
-  (** A hash function on [t] values. *)
-
-end
-
 module type S = sig
   (** Output signature of the {!Make} module. *)
 
@@ -314,6 +303,6 @@ module type S = sig
   end
 end
 
-module Make (Config : CONFIG) (Key : HASHABLE) : S with type key = Key.t
+module Make (Config : CONFIG) (Key : Hashtbl.HashedType) : S with type key = Key.t
 (** Functor building an implementation of the Hamt structure,
     given a hashable type. *)

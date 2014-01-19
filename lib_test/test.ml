@@ -9,6 +9,7 @@ module Hamt = Hamt.Make
                 (struct
                   type t = int
                   let hash = Hashtbl.hash
+                  let equal = (=)
                 end)
 
 (* let n = int_of_string (Sys.argv.(1)) *)
