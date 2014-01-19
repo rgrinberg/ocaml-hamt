@@ -450,7 +450,6 @@ module Make (Config : CONFIG) (Key : Hashtbl.HashedType) : S with type key = Key
       let children = Array.map (alter_all f) children in
       let nb_children = Array.fold_left
                           (fun n v -> if is_empty v then n else succ n) 0 children in
-      let open Int in
       if nb_children < arrnode_min
       then pack_array_node (fun _ -> false) nb_children children
       else ArrayNode (nb_children, children)
