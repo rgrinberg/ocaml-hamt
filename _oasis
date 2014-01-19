@@ -1,0 +1,30 @@
+OASISFormat: 0.4
+Name:        hamt
+Version:     0.1
+Synopsis:    Hash Array Mapped Tries
+Authors:     Thibault Suzanne
+License:     BSD3
+BuildTools: ocamlbuild
+Plugins:     META (0.4)
+
+Library hamt
+  Path:            lib
+  BuildTools:      ocamlbuild
+  Modules:         Hamt
+  Findlibname: hamt
+  InternalModules: BitUtils
+
+Executable test_runner
+  Path:               lib_test
+  MainIs:             test.ml
+  Build$:             flag(tests)
+  Custom:             true
+  CompiledObject:     best
+  Install:            false
+  BuildDepends:       hamt,oUnit
+
+Test test
+  Run$:               flag(tests)
+  Command:            $test_runner
+  WorkingDirectory:   lib_test
+  
