@@ -1,5 +1,5 @@
 open BitUtils
-open Monomorphic.None
+open Monomorphic.Int
 
 module type CONFIG = sig
   (* Number of bits taken from the hashed key at every step *)
@@ -23,23 +23,6 @@ module StdConfig32 : CONFIG = struct
   let bmnode_max = 8
   let arrnode_min = 4
 end
-
-module IntCompare : sig
-  type t = int
-  val (=) : int -> int -> bool
-  val (<) : int -> int -> bool
-  val (>) : int -> int -> bool
-  val (<>) : int -> int -> bool
-end = struct
-  open Pervasives
-  type t = int
-  let (=) x y = x = y
-  let (>) x y = x > y
-  let (<) x y = x < y
-  let (<>) x y = x <> y
-end
-
-open IntCompare
 
 module type S = sig
   type key
