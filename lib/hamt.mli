@@ -306,3 +306,8 @@ end
 module Make (Config : CONFIG) (Key : Hashtbl.HashedType) : S with type key = Key.t
 (** Functor building an implementation of the Hamt structure,
     given a hashable type. *)
+
+module Make' (Key : Hashtbl.HashedType) : S with type key = Key.t
+
+module String : S with type key = string
+module Int : S with type key = int

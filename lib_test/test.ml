@@ -4,14 +4,7 @@ let () = Random.self_init ()
 
 module IntMap = Map.Make (struct type t = int let compare = compare end)
 
-module Hamt = Hamt.Make
-                (Hamt.StdConfig)
-                (struct
-                  type t = int
-                  let hash = Hashtbl.hash
-                  let equal = (=)
-                end)
-
+module Hamt = Hamt.Int
 (* let n = int_of_string (Sys.argv.(1)) *)
 
 let n = 100
