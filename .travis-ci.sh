@@ -17,7 +17,7 @@ opam --git-version
 
 # opam init git://github.com/ocaml/opam-repository >/dev/null 2>&1
 opam init
-opam install oasis ocamlfind monomorphic ounit
+opam install oasis ocamlfind monomorphic ounit core_bench
 
 eval `opam config env`
 make configure
