@@ -12,15 +12,13 @@ end
 
 let mem x t = Array.fold_left (fun b y -> b || x = y) false t
 
-module Config = (val
-                  if mem "-32" Sys.argv
-                  then (module Hamt.StdConfig32)
-                  else (module Hamt.StdConfig)
-                  : Hamt.Config)
-
 module AssocHamt =
-  Hamt.Make (Config)
-    (struct type t = int let hash = Hashtbl.hash end)
+  Hamt.Make'
+    (struct
+      type t = int
+      let hash = Hashtbl.hash
+      let equal = (=)
+    end)
 
 module AssocMap =
   Map.Make
