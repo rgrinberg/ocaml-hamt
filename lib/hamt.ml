@@ -1,7 +1,7 @@
 open BitUtils
 open Monomorphic.Int
 
-module type CONFIG = sig
+module type Config = sig
   (* Number of bits taken from the hashed key at every step *)
   val shift_step : int
 
@@ -12,13 +12,13 @@ module type CONFIG = sig
   val arrnode_min : int
 end
 
-module StdConfig : CONFIG = struct
+module StdConfig : Config = struct
   let shift_step = 5
   let bmnode_max = 16
   let arrnode_min = 8
 end
 
-module StdConfig32 : CONFIG = struct
+module StdConfig32 : Config = struct
   let shift_step = 4
   let bmnode_max = 8
   let arrnode_min = 4
@@ -103,7 +103,7 @@ module type S = sig
   end
 end
 
-module Make (Config : CONFIG) (Key : Hashtbl.HashedType) : S with type key = Key.t = struct
+module Make (Config : Config) (Key : Hashtbl.HashedType) : S with type key = Key.t = struct
   module Key = struct
     include Key
     let (=) = Key.equal

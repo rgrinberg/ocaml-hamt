@@ -5,7 +5,7 @@
     @author Thibault Suzanne
 *)
 
-module type CONFIG = sig
+module type Config = sig
   val shift_step : int
   (** The number of bits taken from the hashed key at every step of an
       elementary function. Note that [2 ^ (2 ^ shift_step)] {b must}
@@ -23,7 +23,7 @@ module type CONFIG = sig
 end
 (** Input signature of the size configuration of the structure. *)
 
-module StdConfig : CONFIG
+module StdConfig : Config
 (** Standard configuration for 64-bits architectures. Its parameters
     are :
 
@@ -34,7 +34,7 @@ module StdConfig : CONFIG
     ]}
 *)
 
-module StdConfig32 : CONFIG
+module StdConfig32 : Config
 (** Standard configuration for 32-bits architectures. Its parameters
     are :
 
@@ -303,7 +303,7 @@ module type S = sig
   end
 end
 
-module Make (Config : CONFIG) (Key : Hashtbl.HashedType) : S with type key = Key.t
+module Make (Config : Config) (Key : Hashtbl.HashedType) : S with type key = Key.t
 (** Functor building an implementation of the Hamt structure,
     given a hashable type. *)
 

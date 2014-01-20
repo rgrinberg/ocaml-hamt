@@ -16,7 +16,7 @@ module Config = (val
                   if mem "-32" Sys.argv
                   then (module Hamt.StdConfig32)
                   else (module Hamt.StdConfig)
-                  : Hamt.CONFIG)
+                  : Hamt.Config)
 
 module AssocHamt =
   Hamt.Make (Config)
