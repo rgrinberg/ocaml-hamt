@@ -113,7 +113,7 @@ module type S = sig
 
   (** {3 Getting elements } *)
 
-  val find : key -> 'a t -> 'a
+  val find_exn : key -> 'a t -> 'a
   (** [find k t] returns the value bound from the key [k] in [t]. If
       there is no such binding, [Not_found] is raised. *)
 
