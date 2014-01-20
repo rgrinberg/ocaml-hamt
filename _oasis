@@ -24,6 +24,15 @@ Executable test_runner
   Install:            false
   BuildDepends:       hamt,oUnit
 
+Executable param
+  Path:               lib_test
+  MainIs:             param.ml
+  Build$:             flag(tests)
+  Custom:             true
+  CompiledObject:     best
+  Install:            false
+  BuildDepends:       hamt
+
 Test test
   Run$:               flag(tests)
   Command:            $test_runner
