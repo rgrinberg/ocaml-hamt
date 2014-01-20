@@ -66,6 +66,9 @@ module type S = sig
   val cardinal : 'a t -> int
   (** Returns the number of bindings of a table. *)
 
+  val length : 'a t -> int
+  (** alias of [cardinal] *)
+
   (** {3 Modify bindings } *)
 
   val alter : key -> ('a option -> 'a option) -> 'a t -> 'a t
