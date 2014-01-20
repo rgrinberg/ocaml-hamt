@@ -156,7 +156,7 @@ module Make (Config : Config) (Key : Hashtbl.HashedType) : S with type key = Key
     | _ -> false
 
   let node_hash = function
-    | Leaf (h, _, _) -> h
+    | Leaf (h, _, _)
     | HashCollision (h, _) -> h
     | _ -> failwith "node_hash"
 
