@@ -73,13 +73,13 @@ module type S = sig
   val union_f : (key -> 'a -> 'a -> 'a) -> 'a t -> 'a t -> 'a t
 
   module Import : sig
-    module type FOLDABLE = sig
+    module type Foldable = sig
       type key
       type 'a t
       val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
     end
 
-    module Make (M : FOLDABLE with type key = key) : sig
+    module Make (M : Foldable with type key = key) : sig
       val add_from : 'a M.t -> 'a t -> 'a t
       val from : 'a M.t -> 'a t
     end
@@ -674,13 +674,13 @@ module Make (Config : Config) (Key : Hashtbl.HashedType) : S with type key = Key
 
   module Import = struct
 
-    module type FOLDABLE = sig
+    module type Foldable = sig
       type key
       type 'v t
       val fold : (key -> 'v -> 'a -> 'a) -> 'v t -> 'a -> 'a
     end
 
-    module Make (M : FOLDABLE with type key = key) = struct
+    module Make (M : Foldable with type key = key) = struct
       let add_from x hamt = M.fold add_mute x (copy hamt)
       let from x = add_from x Empty
     end

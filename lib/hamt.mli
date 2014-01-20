@@ -241,7 +241,7 @@ module type S = sig
   module Import : sig
 
     (** Input signature of the module {!Make}, representing datas to be imported in Hamt. *)
-    module type FOLDABLE = sig
+    module type Foldable = sig
 
       type key
       (** The type of your datas' keys. *)
@@ -257,7 +257,7 @@ module type S = sig
 
     end
 
-    module Make (M : FOLDABLE with type key = key) : sig
+    module Make (M : Foldable with type key = key) : sig
       val add_from : 'a M.t -> 'a t -> 'a t
       (** [add_from s t] adds every binding of [s] to the Hamt [t]. *)
 
