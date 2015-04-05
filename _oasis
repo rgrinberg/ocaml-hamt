@@ -4,6 +4,7 @@ Version:     0.1
 Synopsis:    Hash Array Mapped Tries
 Authors:     Thibault Suzanne, Gabriel Scherer, Rudi Grinberg
 BuildTools:  ocamlbuild
+License:     MIT
 Plugins:     META (0.4)
 
 Library hamt
