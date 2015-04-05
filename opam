@@ -1,0 +1,32 @@
+opam-version: "1.2"
+maintainer: "rudi.grinberg@gmail.com"
+license: "MIT"
+authors: [
+  "Thibault Suzanne"
+  "Gabriel Scherer"
+  "Rudi Grinberg"
+]
+
+homepage: "https://github.com/rgrinberg/ocaml-hamt"
+bug-reports: "https://github.com/rgrinberg/ocaml-hamt/issues"
+dev-repo: "https://github.com/rgrinberg/ocaml-hamt.git"
+
+build: [
+  [make "configure"]
+  [make "all"]
+]
+
+
+install: [make "install"]
+
+build-doc: [[make "doc"]]
+
+remove: [["ocamlfind" "remove" "hamt"]]
+
+depends: [
+  "ocamlfind" {build}
+  "oasis" {build}
+  "monomorphic"
+  "ounit" {test & >="1.0.2"}
+]
+available: [ocaml-version >= "4.01.0"]
