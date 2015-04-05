@@ -20,28 +20,28 @@ let rec fill n acc ~f =
 let () =
   let args = [1;10;100;1000;10000] in
   Command.run @@
-    Bench.make_command [
-        Bench.Test.create_indexed
-          ~name:"IntMap.add" ~args
-          (fun i ->
-           Staged.stage @@
-             fun () ->
-             ignore @@ fill i IntMap.empty ~f:IntMap.add
-          );
-        Bench.Test.create_indexed
-          ~name:"HashTbl.add" ~args
-          (fun i ->
-           Staged.stage @@
-             fun () ->
-             ignore @@ fill i (Int.Table.create ())
-                            ~f:(fun k v t -> Hashtbl.replace t ~key:k ~data:v; t)
-          );
-        Bench.Test.create_indexed
-          ~name:"Hamt.Int.add" ~args
-          (fun i ->
-           Staged.stage @@
-             fun () ->
-             ignore @@ fill i (Hamt.Int.empty)
-                            ~f:(Hamt.Int.add)
-          )
-      ]
+  Bench.make_command [
+    Bench.Test.create_indexed
+      ~name:"IntMap.add" ~args
+      (fun i ->
+         Staged.stage @@
+         fun () ->
+         ignore @@ fill i IntMap.empty ~f:IntMap.add
+      );
+    Bench.Test.create_indexed
+      ~name:"HashTbl.add" ~args
+      (fun i ->
+         Staged.stage @@
+         fun () ->
+         ignore @@ fill i (Int.Table.create ())
+                     ~f:(fun k v t -> Hashtbl.replace t ~key:k ~data:v; t)
+      );
+    Bench.Test.create_indexed
+      ~name:"Hamt.Int.add" ~args
+      (fun i ->
+         Staged.stage @@
+         fun () ->
+         ignore @@ fill i (Hamt.Int.empty)
+                     ~f:(Hamt.Int.add)
+      )
+  ]
