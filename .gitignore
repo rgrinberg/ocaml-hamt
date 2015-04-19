@@ -9,3 +9,7 @@ lib/*.mllib
 lib/*.mldylib
 _tags
 /TAGS
+dist/
+bench1
+param
+test-t1
