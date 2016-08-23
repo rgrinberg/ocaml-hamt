@@ -37,7 +37,6 @@ Test test
   Run$:               flag(tests)
   Command:            $test_runner
   WorkingDirectory:   lib_test
-  
 
 Executable bench1
   Path:               lib_test
