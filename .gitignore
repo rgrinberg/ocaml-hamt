@@ -1,13 +1,7 @@
 _build/
 *.native
-myocamlbuild.ml
 setup.data
 setup.log
-setup.ml
-lib/META
-lib/*.mllib
-lib/*.mldylib
-_tags
 /TAGS
 dist/
 bench1

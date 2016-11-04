@@ -1,0 +1,11 @@
+# OASIS_START
+# DO NOT EDIT (digest: 8d6e7d974239de86ab578491776d272c)
+version = "0.1"
+description = "Hash Array Mapped Tries"
+archive(byte) = "hamt.cma"
+archive(byte, plugin) = "hamt.cma"
+archive(native) = "hamt.cmxa"
+archive(native, plugin) = "hamt.cmxs"
+exists_if = "hamt.cma"
+# OASIS_STOP
+

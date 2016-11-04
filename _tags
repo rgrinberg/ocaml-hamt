@@ -1,0 +1,35 @@
+# OASIS_START
+# DO NOT EDIT (digest: 2a6711af7a62b8dea7c0f737b0d61f24)
+# Ignore VCS directories, you can use the same kind of rule outside
+# OASIS_START/STOP if you want to exclude directories that contains
+# useless stuff for the build process
+true: annot, bin_annot
+<**/.svn>: -traverse
+<**/.svn>: not_hygienic
+".bzr": -traverse
+".bzr": not_hygienic
+".hg": -traverse
+".hg": not_hygienic
+".git": -traverse
+".git": not_hygienic
+"_darcs": -traverse
+"_darcs": not_hygienic
+# Library hamt
+"lib/hamt.cmxs": use_hamt
+# Executable test_runner
+<lib_test/test.{native,byte}>: pkg_oUnit
+<lib_test/test.{native,byte}>: use_hamt
+<lib_test/*.ml{,i,y}>: pkg_oUnit
+<lib_test/test.{native,byte}>: custom
+# Executable param
+<lib_test/param.{native,byte}>: use_hamt
+<lib_test/param.{native,byte}>: custom
+# Executable bench1
+<lib_test/bench1.{native,byte}>: pkg_core_bench
+<lib_test/bench1.{native,byte}>: pkg_threads
+<lib_test/bench1.{native,byte}>: use_hamt
+<lib_test/*.ml{,i,y}>: pkg_core_bench
+<lib_test/*.ml{,i,y}>: pkg_threads
+<lib_test/*.ml{,i,y}>: use_hamt
+<lib_test/bench1.{native,byte}>: custom
+# OASIS_STOP
