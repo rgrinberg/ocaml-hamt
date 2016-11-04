@@ -13,9 +13,14 @@ dev-repo: "https://github.com/rgrinberg/ocaml-hamt.git"
 
 build: [
   [make "configure"]
-  [make "all"]
+  [make "build"]
 ]
 
+build-test: [
+  [make "configure-test"]
+  [make "build"]
+  [make "test"]
+]
 
 install: [make "install"]
 
@@ -26,6 +31,6 @@ remove: [["ocamlfind" "remove" "hamt"]]
 depends: [
   "ocamlfind" {build}
   "ocamlbuild" {build}
-  "ounit" {test & >="1.0.2"}
+  "ounit" {test & >=" 1.0.2"}
 ]
 available: [ocaml-version >= "4.01.0"]

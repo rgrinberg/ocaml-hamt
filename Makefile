@@ -1,7 +1,9 @@
 default: all
 
 configure:
-	oasis setup
+	ocaml setup.ml -configure
+
+configure-test:
 	ocaml setup.ml -configure --enable-tests
 
 build:
@@ -10,7 +12,7 @@ build:
 all:
 	ocaml setup.ml -all
 
-test: build
+test:
 	ocaml setup.ml -test
 
 doc:
@@ -21,10 +23,6 @@ clean:
 
 scrub: clean
 	ocaml setup.ml -distclean
-	rm -rf _tags
-	rm -rf myocamlbuild.ml
-	rm -rf META
-	rm -rf setup.ml
 
 install:
 	ocaml setup.ml -install
@@ -35,4 +33,4 @@ uninstall:
 reinstall:
 	ocaml setup.ml -reinstall
 
-.PHONY: build all build default install uninstall
+.PHONY: build all build default install uninstall configure-test configure
