@@ -1,6 +1,6 @@
 # OASIS_START
-# DO NOT EDIT (digest: 8d6e7d974239de86ab578491776d272c)
-version = "0.1"
+# DO NOT EDIT (digest: 17c2f0351efedf8e32bac433a229eb3a)
+version = "1.0.0"
 description = "Hash Array Mapped Tries"
 archive(byte) = "hamt.cma"
 archive(byte, plugin) = "hamt.cma"
