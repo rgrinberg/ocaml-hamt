@@ -13,7 +13,6 @@ Library hamt
   Modules:         Hamt
   Findlibname: hamt
   InternalModules: BitUtils
-  BuildDepends: monomorphic
 
 Executable test_runner
   Path:               lib_test

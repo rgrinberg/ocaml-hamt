@@ -1,5 +1,4 @@
 open BitUtils
-open Monomorphic.Int
 
 module type Config = sig
   (* Number of bits taken from the hashed key at every step *)

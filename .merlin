@@ -1,5 +1,4 @@
 S lib
 S lib_test
 B _build/**
-PKG monomorphic
 PKG core core_bench
