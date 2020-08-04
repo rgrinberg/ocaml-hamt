@@ -1,4 +1,0 @@
-S lib
-S lib_test
-B _build/**
-PKG core core_bench
