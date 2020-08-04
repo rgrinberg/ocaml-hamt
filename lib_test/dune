@@ -1,0 +1,14 @@
+(test
+  (name test)
+  (modules test)
+  (libraries hamt stdlib-shims))
+
+(test
+  (name bench1)
+  (modules bench1)
+  (libraries hamt core core_bench))
+
+(test
+  (name param)
+  (modules param)
+  (libraries hamt))

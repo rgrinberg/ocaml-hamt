@@ -82,16 +82,16 @@ let () =
 
   let hamt = test_add M.empty input in
   if should_test_add then begin
-    for i = 0 to nb_add do
+    for _ = 0 to nb_add do
       ignore (test_add hamt input)
     done;
   end;
   if should_test_find then begin
-    for i = 0 to nb_read / 2 do
+    for _ = 0 to nb_read / 2 do
       test_find hamt input
     done;
     let other_input = random_input limit nbiter [] in
-    for i = 0 to nb_read / 2 do
+    for _ = 0 to nb_read / 2 do
       test_find hamt other_input
     done
   end

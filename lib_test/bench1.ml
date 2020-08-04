@@ -1,5 +1,5 @@
-open Core.Std
-open Core_bench.Std
+open Core
+open Core_bench
 
 let max_rand = 1_000_000
 
@@ -34,7 +34,7 @@ let () =
          Staged.stage @@
          fun () ->
          ignore @@ fill i (Int.Table.create ())
-                     ~f:(fun k v t -> Hashtbl.replace t ~key:k ~data:v; t)
+                     ~f:(fun k v t -> Int.Table.set t ~key:k ~data:v; t)
       );
     Bench.Test.create_indexed
       ~name:"Hamt.Int.add" ~args

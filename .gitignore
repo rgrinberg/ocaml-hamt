@@ -1,9 +1,3 @@
 _build/
-*.native
-setup.data
-setup.log
-/TAGS
-dist/
-bench1
-param
-test-t1
+_opam/
+.merlin

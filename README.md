@@ -6,14 +6,12 @@ Hash Array Mapped Tries for OCaml
 ## Prerequesites
 
 * opam
-* oasis
-* monomorphic
+* dune
 
 ## Build
+
 ```
-make configure
 make
-make install
 ```
 
 All original work was done by Thibault Suzanne [1][2]
