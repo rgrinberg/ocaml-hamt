@@ -34,7 +34,7 @@ let bitmap_to_indices bitmap =
 (*
    Given a list of indices, returns the bitmap with one-bits at these indices
 *)
-let rec indices_to_bitmap =
+let indices_to_bitmap =
   List.fold_left
     (fun x i -> x lor 1 lsl i) 0
 

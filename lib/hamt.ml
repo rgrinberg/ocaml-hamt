@@ -128,11 +128,6 @@ module Make (Config : Config) (Key : Hashtbl.HashedType) : S with type key = Key
 
   let leaf h k v = Leaf (h, k, v)
 
-  let node_children = function
-    | BitmapIndexedNode (_, base) -> base
-    | ArrayNode (_, children) -> children
-    | _ -> failwith "children"
-
   let singleton k v = Leaf (hash k, k, v)
 
   let is_empty = function
@@ -153,11 +148,6 @@ module Make (Config : Config) (Key : Hashtbl.HashedType) : S with type key = Key
   let is_tip_node = function
     | Empty | Leaf (_, _, _) | HashCollision (_, _) -> true
     | _ -> false
-
-  let node_hash = function
-    | Leaf (h, _, _)
-    | HashCollision (h, _) -> h
-    | _ -> failwith "node_hash"
 
   let hash_fragment shift h = (h asr shift) land mask
 
@@ -413,7 +403,7 @@ module Make (Config : Config) (Key : Hashtbl.HashedType) : S with type key = Key
         end
     in aux 0 indices
 
-  and alter_all ?(mute=false) f = function
+  and alter_all f = function
     | Empty -> Empty
     | Leaf (h, k, v) -> option Empty (leaf h k) (f k v)
     | HashCollision (h, pairs) ->
@@ -431,7 +421,7 @@ module Make (Config : Config) (Key : Hashtbl.HashedType) : S with type key = Key
         | indices, base ->
           BitmapIndexedNode (indices_to_bitmap indices, (Array.of_list base))
       end
-    | ArrayNode (nb_children, children) ->
+    | ArrayNode (_, children) ->
       let children = Array.map (alter_all f) children in
       let nb_children = Array.fold_left
                           (fun n v -> if is_empty v then n else succ n) 0 children in
@@ -532,14 +522,6 @@ module Make (Config : Config) (Key : Hashtbl.HashedType) : S with type key = Key
     let (k, v) = choose hamt in
     (k, v), remove k hamt
 
-  let array_of_rev_list li =
-    let a = Array.make (List.length li) (List.hd li) in
-    let rec aux n = function
-      | [] -> ()
-      | x :: xs -> a.(n) <- x; aux (pred n) xs
-    in aux (pred (Array.length a)) li;
-    a
-
   let rec intersect_array :
     'a 'b. int -> (key -> 'a -> 'b -> 'c) -> 'a t array -> 'b t array -> 'c t =
     fun shift f children1 children2 ->
@@ -577,14 +559,14 @@ module Make (Config : Config) (Key : Hashtbl.HashedType) : S with type key = Key
                    try (k, f k v (List.assoc k li2)) :: acc
                    with Not_found -> acc)
                 [] li1))
-      | HashCollision (h, li), BitmapIndexedNode (bitmap, base) ->
+      | HashCollision (h, _), BitmapIndexedNode (bitmap, base) ->
         let bit = 1 lsl (hash_fragment shift h) in
         if bitmap land bit = 0 then Empty
         else
           let n = ctpop (bitmap land (pred bit)) in
           let node = intersect_node (shift + shift_step) f t1 base.(n) in
           reify_node (BitmapIndexedNode (bit, [|node|]))
-      | HashCollision (h, li), ArrayNode (nb_children, children) ->
+      | HashCollision (h, _), ArrayNode (_, children) ->
         let fragment = hash_fragment shift h in
         let child =
           intersect_node (shift + shift_step) f t1 children.(fragment) in
@@ -607,7 +589,7 @@ module Make (Config : Config) (Key : Hashtbl.HashedType) : S with type key = Key
     intersect_node 0 f t1 t2
 
   let intersect f t1 t2 =
-    intersecti (fun k v -> f v) t1 t2
+    intersecti (fun _ v -> f v) t1 t2
 
   let rec merge_array :
     'a 'b.
@@ -635,7 +617,7 @@ module Make (Config : Config) (Key : Hashtbl.HashedType) : S with type key = Key
                       if Key.(k' = k) then (flag := true; f k (Some v) (Some v'))
                       else f k' None (Some v')) t2;
         in if !flag then t2 else alter_node shift h k (fun _ -> f k (Some v) None) t2
-      | HashCollision (h, li), _ ->
+      | HashCollision (_, li), _ ->
         let absents = ref li in
         let t2 = alter_all
                    (fun k' v' ->
@@ -661,7 +643,7 @@ module Make (Config : Config) (Key : Hashtbl.HashedType) : S with type key = Key
   let merge f t1 t2 = merge_node 0 f t1 t2
 
   let union t1 t2 = merge
-                      (fun k x y -> match (x, y) with
+                      (fun _ x y -> match (x, y) with
                          | _, None -> x
                          | _, _ -> y) t1 t2
 
@@ -714,7 +696,7 @@ module Make' = Make (StdConfig)
 
 module With_polymorphic (M : sig type t end) = struct
   include M
-  let equal = Pervasives.(=)
+  let equal = Stdlib.(=)
   let hash = Hashtbl.hash
 end
 
