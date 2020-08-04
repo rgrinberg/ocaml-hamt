@@ -14,7 +14,7 @@ bug-reports: "https://github.com/rgrinberg/ocaml-hamt/issues"
 depends: [
   "dune" {>= "1.11"}
   "stdlib-shims"
-  "ocaml" {>= "4.01.0"}
+  "ocaml" {>= "4.02.3"}
   "core" {with-test & >= "v0.11"}
   "core_bench" {with-test & >= "v0.11"}
 ]

@@ -1,7 +1,7 @@
 (test
   (name test)
   (modules test)
-  (libraries hamt))
+  (libraries hamt stdlib-shims))
 
 (test
   (name bench1)
