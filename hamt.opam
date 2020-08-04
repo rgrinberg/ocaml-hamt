@@ -7,6 +7,7 @@ HAMT data structure implemented in OCaml
 http://gallium.inria.fr/blog/implementing-hamt-for-ocaml/"""
 maintainer: ["rudi.grinberg@gmail.com"]
 authors: ["Thibault Suzanne" "Gabriel Scherer" "Rudi Grinberg"]
+license: "MIT"
 homepage: "https://github.com/rgrinberg/ocaml-hamt"
 doc: "https://rgrinberg.github.io/ocaml0hamt/"
 bug-reports: "https://github.com/rgrinberg/ocaml-hamt/issues"
@@ -14,7 +15,8 @@ depends: [
   "dune" {>= "1.11"}
   "stdlib-shims"
   "ocaml" {>= "4.01.0"}
-  "ounit" {test & >= " 1.0.2"}
+  "core" {with-test & >= "v0.11"}
+  "core_bench" {with-test & >= "v0.11"}
 ]
 build: [
   ["dune" "subst"] {pinned}

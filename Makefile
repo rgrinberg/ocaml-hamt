@@ -2,4 +2,8 @@ default: all
 
 .PHONY: all
 all:
-	dune build @install @all
+	dune build
+
+.PHONY: test
+test:
+	dune runtest
